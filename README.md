@@ -1,6 +1,7 @@
 # CodingTest
 
-Run instructions
+Run instructions:
+
 Task1: $./value_predictor.py
 
 Task2: $./face_predictor.py 
