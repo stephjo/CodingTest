@@ -80,8 +80,6 @@ def detect_faces(image_name):
             image_tile = img[y:y + tile_height, x:x + tile_width]
             boxes = face_recognition.face_locations(image_tile, model='hog')
             if len(boxes) > 0:
-                print('boxes1', boxes)
-                print('tile_no',tile_list[tile_count])
                 face_grid_list.append(tile_list[tile_count])
             tile_count += 1
 
