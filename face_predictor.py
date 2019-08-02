@@ -44,36 +44,50 @@ def detect_faces(image_name):
     #As the image is divided into 8*8 grids ,we will loop through each tile to detect faces
 
     #Initialise tile count,xmin and ymin value to slide through the image
-    tile_count =0
-    xmin=0
-    ymin=0
-    while tile_count < len(tile_list):
+#     tile_count =0
+#     xmin=0
+#     ymin=0
+#     while tile_count < len(tile_list):
 
-        #set the width and height of each tile
-        ymax=ymin + tile_height
-        xmax=xmin + tile_width
+#         #set the width and height of each tile
+#         ymax=ymin + tile_height
+#         xmax=xmin + tile_width
 
-        #Extract tile portion from original image
-        img_tile = img[ymin:ymax, xmin:xmax]
+#         #Extract tile portion from original image
+#         img_tile = img[ymin:ymax, xmin:xmax]
 
-        #Pass the extracted image to the opencv face_recognition module.This module uses HOG detector to detect faces
-        boxes = face_recognition.face_locations(img_tile, model='hog')
+#         #Pass the extracted image to the opencv face_recognition module.This module uses HOG detector to detect faces
+#         boxes = face_recognition.face_locations(img_tile, model='hog')
 
-        #if face is detected append the row,column values to a list
-        if len(boxes) > 0:
-            face_grid_list.append(tile_list[tile_count])
+#         #if face is detected append the row,column values to a list
+#         if len(boxes) > 0:
+#             face_grid_list.append(tile_list[tile_count])
 
-        #set ymin and xmin to new values
-        if ymax > img_height:
-            ymax=0
-        if xmax > img_width:
-            xmax=0
-        ymin=ymax
-        xmin=xmax
+#         #set ymin and xmin to new values
+#         if ymax > img_height:
+#             ymax=0
+#         if xmax > img_width:
+#             xmax=0
+#         ymin=ymax
+#         xmin=xmax
 
-        tile_count += 1
+#         tile_count += 1
 
-    print("Output : ",face_grid_list)
+#     print("Output : ",face_grid_list)
+    tile_count = 0
+    for y in range(0, img_height, tile_height):
+        for x in range(0, img_width, tile_width):
+            image_tile = img[y:y + tile_height, x:x + tile_width]
+            boxes = face_recognition.face_locations(image_tile, model='hog')
+            if len(boxes) > 0:
+                print('boxes1', boxes)
+                print('tile_no',tile_list[tile_count])
+                face_grid_list.append(tile_list[tile_count])
+            tile_count += 1
+
+    json_results = json.dumps(face_grid_list)
+
+    print("Output : ",json_results)
 
     #delete existing output image
     delete_oldimages(result_name)
